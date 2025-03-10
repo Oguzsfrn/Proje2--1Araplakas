@@ -2,21 +2,22 @@ import re, json, ast
 
 def menu():
     print("╔═════════════════════╗")
-    print("║  REHBER UYGULAMASI  ║")
+    print("║  ARAÇ PLAKA UYGULAMASI ║")
     print("║                     ║")
-    print("║  1-Kişi ekle        ║")
+    print("║  1-Plaka ekle       ║")
     print("║  2-Listele          ║")
     print("║  3-Ara              ║")
     print("║  4-Düzelt           ║")
     print("║  5-Sil              ║")
+    print("║  6-Çıkış            ║")
     print("║                     ║")
-    print("║  Seçimiz nedir?     ║")
+    print("║  Seçiminiz nedir?   ║")
     print("╚═════════════════════╝")
     # 201 ╔ 187 ╗ 200 ╚  # 188 ╝
 
     secim = input("")
     if secim == "1":
-        kisiEkle()
+        plakaEkle()
         listele()
         menu()
     elif secim == "2":
@@ -33,82 +34,85 @@ def menu():
         sil()
         listele()
         menu()
+    elif secim == "6":
+        print("Çıkış yapılıyor...")
+        exit()
     else:
         print("Geçersiz seçim, lütfen tekrar deneyin.")
         menu()
 
 def listele():
     try:
-        with open('rehber.json', 'r', encoding='utf-8') as file:
-            rehber = json.load(file)
-            for kisi in rehber:
-                print(f"Ad: {kisi['ad']}, Telefon: {kisi['telefon']}")
+        with open('plakalar.json', 'r', encoding='utf-8') as file:
+            plakalar = json.load(file)
+            for arac in plakalar:
+                print(f"Plaka: {arac['plaka']}, Sahibi: {arac['sahibi']}")
     except FileNotFoundError:
-        print("Rehberde kayıtlı kimse yok.")
+        print("Kayıtlı araç yok.")
 
-def kisiEkle():
-    ad = input("Ad: ")
-    telefon = input("Telefon: ")
-    yeni_kisi = {"ad": ad, "telefon": telefon}
+def plakaEkle():
+    plaka = input("Plaka: ")
+    sahibi = input("Sahibi: ")
+    yeni_arac = {"plaka": plaka, "sahibi": sahibi}
     
     try:
-        with open('rehber.json', 'r+', encoding='utf-8') as file:
-            rehber = json.load(file)
-            rehber.append(yeni_kisi)
+        with open('plakalar.json', 'r+', encoding='utf-8') as file:
+            plakalar = json.load(file)
+            plakalar.append(yeni_arac)
             file.seek(0)
-            json.dump(rehber, file, ensure_ascii=False, indent=4)
+            json.dump(plakalar, file, ensure_ascii=False, indent=4)
     except FileNotFoundError:
-        with open('rehber.json', 'w', encoding='utf-8') as file:
-            json.dump([yeni_kisi], file, ensure_ascii=False, indent=4)
+        with open('plakalar.json', 'w', encoding='utf-8') as file:
+            json.dump([yeni_arac], file, ensure_ascii=False, indent=4)
 
 def ara():
-    aranan = input("Aramak istediğiniz kişinin adını girin: ")
+    aranan = input("Aramak istediğiniz plaka: ")
     try:
-        with open('rehber.json', 'r', encoding='utf-8') as file:
-            rehber = json.load(file)
-            for kisi in rehber:
-                if kisi['ad'] == aranan:
-                    print(f"Ad: {kisi['ad']}, Telefon: {kisi['telefon']}")
+        with open('plakalar.json', 'r', encoding='utf-8') as file:
+            plakalar = json.load(file)
+            for arac in plakalar:
+                if arac['plaka'] == aranan:
+                    print(f"Plaka: {arac['plaka']}, Sahibi: {arac['sahibi']}")
                     return
-            print("Kişi bulunamadı.")
+            print("Araç bulunamadı.")
     except FileNotFoundError:
-        print("Rehberde kayıtlı kimse yok.")
+        print("Kayıtlı araç yok.")
 
 def duzelt():
-    aranan = input("Düzeltmek istediğiniz kişinin adını girin: ")
+    aranan = input("Düzeltmek istediğiniz plaka: ")
     try:
-        with open('rehber.json', 'r+', encoding='utf-8') as file:
-            rehber = json.load(file)
-            for kisi in rehber:
-                if kisi['ad'] == aranan:
-                    yeni_ad = input("Yeni ad: ")
-                    yeni_telefon = input("Yeni telefon: ")
-                    kisi['ad'] = yeni_ad
-                    kisi['telefon'] = yeni_telefon
+        with open('plakalar.json', 'r+', encoding='utf-8') as file:
+            plakalar = json.load(file)
+            for arac in plakalar:
+                if arac['plaka'] == aranan:
+                    yeni_plaka = input("Yeni plaka: ")
+                    yeni_sahibi = input("Yeni sahibi: ")
+                    arac['plaka'] = yeni_plaka
+                    arac['sahibi'] = yeni_sahibi
                     file.seek(0)
-                    json.dump(rehber, file, ensure_ascii=False, indent=4)
-                    print("Kişi bilgileri güncellendi.")
+                    json.dump(plakalar, file, ensure_ascii=False, indent=4)
+                    print("Araç bilgileri güncellendi.")
                     return
-            print("Kişi bulunamadı.")
+            print("Araç bulunamadı.")
     except FileNotFoundError:
-        print("Rehberde kayıtlı kimse yok.")
+        print("Kayıtlı araç yok.")
 
 def sil():
-    aranan = input("Silmek istediğiniz kişinin adını girin: ")
+    aranan = input("Silmek istediğiniz plaka: ")
     try:
-        with open('rehber.json', 'r+', encoding='utf-8') as file:
-            rehber = json.load(file)
-            for kisi in rehber:
-                if kisi['ad'] == aranan:
-                    rehber.remove(kisi)
+        with open('plakalar.json', 'r+', encoding='utf-8') as file:
+            plakalar = json.load(file)
+            for arac in plakalar:
+                if arac['plaka'] == aranan:
+                    plakalar.remove(arac)
                     file.seek(0)
                     file.truncate()
-                    json.dump(rehber, file, ensure_ascii=False, indent=4)
-                    print("Kişi silindi.")
+                    json.dump(plakalar, file, ensure_ascii=False, indent=4)
+                    print("Araç silindi.")
                     return
-            print("Kişi bulunamadı.")
+            print("Araç bulunamadı.")
     except FileNotFoundError:
-        print("Rehberde kayıtlı kimse yok.")
+        print("Kayıtlı araç yok.")
 
 if __name__ == "__main__":
     menu()
