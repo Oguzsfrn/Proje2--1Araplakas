@@ -1,4 +1,4 @@
-Elbette! İşte araç plakası kaydetme uygulamanız için uygun bir README.md taslağı:
+
 
 ```markdown
 # Araç Plakası Kaydetme Uygulaması
@@ -24,7 +24,7 @@ Projeyi yerel makinenizde çalıştırmak için aşağıdaki adımları izleyin:
 2. Gerekli bağımlılıkları yükleyin:
    ```bash
    cd arac-plaka-kaydetme
-   npm install  # veya ilgili başka bir komut
+   .. install  # veya ilgili başka bir komut
    ```
 
 3. Uygulamayı başlatın:
